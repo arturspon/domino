@@ -7,3 +7,53 @@ typedef struct _pecaDomino{
   struct _pecaDomino *right;
   struct _pecaDomino *left;
 }TppecaDomino;
+
+
+TppecaDomino *inicializa(TppecaDomino *ptr){
+	int i, j;
+	TppecaDomino *novo;
+	TppecaDomino *p;
+	p = ptr;
+
+	for(i = 0; i <= 6; i++)
+	{
+		j=i;
+		for(;j <= 6; j++) // Laço para passar do 0:0 para o 1:1
+		{
+			novo = (TppecaDomino *)malloc(sizeof(TppecaDomino));// Cria um novo no para cada uma das peças
+			if(p==NULL)
+			{
+				novo->numberLeft = i; // Dá o valor para a peça da esquerda
+				novo->numberRight = j;	// Dá o valor para a peça da direita
+				novo->right = NULL; // Guarda o endereço da peça da direita
+				novo->left = NULL; // Guarda o endereço da peça da esquerda
+				p = novo;
+			}else
+			{
+				novo->numberLeft = i; // Dá o valor para a peça da esquerda
+				novo->numberRight = j;	// Dá o valor para a peça da direita
+				//novo->right = p; // Guarda o endereço da peça da direita
+				novo->left = p; // Guarda o endereço da peça da esquerda
+				p->right = novo;
+				p = novo;
+			}
+		}
+	}
+	return(p);
+}
+
+void Imprimir(TppecaDomino *pecas){
+	TppecaDomino *i;
+	for(i=pecas; i!=NULL; i = i->left)
+	{	
+		printf("%d:%d\n", i->numberLeft, i->numberRight);
+	}
+}
+
+int main(){
+	TppecaDomino *monte=NULL;
+
+	monte = inicializa(monte);
+	Imprimir(monte);
+	return 0;
+}
