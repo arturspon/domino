@@ -69,7 +69,29 @@ TppecaDomino *insere_fim(TppecaDomino *l, int num1, int num2){
 	return l;
 }
 
-TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
+TppecaDomino *excluir(TppecaDomino *l, int indice){
+	TppecaDomino *aux, *anterior, *proximo = NULL;
+	if(indice == 0){
+		aux = l->right;
+		free(l);
+		return aux;
+	}
+	int i;
+	aux = l;
+	for(i=0; i<indice; i++){
+		anterior = aux;
+		aux = aux->right;
+		proximo = aux->right;
+	}
+	anterior->right = proximo;
+	if(proximo != NULL){
+		proximo->left = anterior;
+	}
+	free(aux);
+	return l;
+}
+
+/*TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 	TppecaDomino *aux = l, *prox, *anterior = NULL;
 	if(num1 == aux->numberLeft && num2 == aux->numberRight && aux->left == NULL){
 		aux = l->right;
@@ -92,7 +114,7 @@ TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 	prox->left = anterior;
 	free(aux);
 	return l;
-}
+}*/
 
 void imprime(TppecaDomino *l){
 	TppecaDomino *aux = l;
@@ -112,11 +134,11 @@ void imprime(TppecaDomino *l){
 
 int main(){
 	system("clear");
-	TppecaDomino *monte = inicializa();
+	TppecaDomino *monte, *jogador;
+	monte = jogador = inicializa();
 	monte = cria_pecas();
 	imprime(monte);
-	monte = excluir(monte, 6, 4);
-	printf("\n\n");
+	monte = excluir(monte, 27);
 	imprime(monte);
 	return 0;
 }
