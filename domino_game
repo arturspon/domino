@@ -56,43 +56,29 @@ TppecaDomino *insere_inicio(TppecaDomino *l, int num1, int num2){
 	return novo;
 }
 
-TppecaDomino *insere_fim(TppecaDomino *l, int num1, int num2){
+TppecaDomino *insere_fim(TppecaDomino *l, int m, int n){
+	TppecaDomino *novo = (TppecaDomino *)malloc(sizeof(TppecaDomino));
+	if(l == NULL){
+		novo->right = NULL;
+		novo->left = NULL;
+		novo->numberLeft = m;
+		novo->numberRight = n;
+		return novo;
+	}
 	TppecaDomino *aux = l;
-	if(aux == NULL){
-		l = insere_inicio(l, num1, num2);
-		return l;
-	}
-	while(aux->right != NULL){
+	novo->right = NULL;
+	novo->numberLeft = m;
+	novo->numberRight = n;
+	while(aux->right!= NULL){
 		aux = aux->right;
 	}
-	aux->right = insere_inicio(aux->right, num1, num2);
+	novo->left = aux;
+	aux->right = novo;
 	return l;
 }
 
-TppecaDomino *excluir(TppecaDomino *l, int indice){
-	TppecaDomino *aux, *anterior, *proximo = NULL;
-	if(indice == 0){
-		aux = l->right;
-		free(l);
-		return aux;
-	}
-	int i;
-	aux = l;
-	for(i=0; i<indice; i++){
-		anterior = aux;
-		aux = aux->right;
-		proximo = aux->right;
-	}
-	anterior->right = proximo;
-	if(proximo != NULL){
-		proximo->left = anterior;
-	}
-	free(aux);
-	return l;
-}
-
-/*TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
-	TppecaDomino *aux = l, *prox, *anterior = NULL;
+TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
+	TppecaDomino *aux = l, *prox = NULL, *anterior;
 	if(num1 == aux->numberLeft && num2 == aux->numberRight && aux->left == NULL){
 		aux = l->right;
 		aux->left = NULL;
@@ -114,31 +100,67 @@ TppecaDomino *excluir(TppecaDomino *l, int indice){
 	prox->left = anterior;
 	free(aux);
 	return l;
-}*/
+}
+
+
+TppecaDomino *copiar(TppecaDomino *l, int num){
+	TppecaDomino *aux = l;
+	int i;
+	for(i = 0; i<=num; i++){
+		aux = aux->right;
+	}
+	return aux;
+}
 
 void imprime(TppecaDomino *l){
-	TppecaDomino *aux = l;
-	int flag = 0;
-
-	while(aux != NULL){
-		printf("|%d||%d| ", aux->numberLeft, aux->numberRight);
-		aux = aux->right;
-		flag++;
-		if(flag == 7) printf("\n");
-		if(flag == 7) flag = 0;
+	TppecaDomino *p = l;
+	int aux = 0;
+	while(p != NULL){
+		printf("|%d|%d| ", p->numberLeft, p->numberRight);
+		aux++;
+		if(aux == 6) printf("\n");
+		if(aux == 6) aux = 0;
+		p = p->right;
 	}
 	printf("\n");
 }
 
-
-
 int main(){
 	system("clear");
-	TppecaDomino *monte, *jogador;
-	monte = jogador = inicializa();
+	TppecaDomino *monte, *jogador = NULL, *aux, *bot = NULL, *mesa = NULL;//, *jogador, *cpu, *mesa;
+	int i, cont = 0, cont2 = 0;
 	monte = cria_pecas();
 	imprime(monte);
-	monte = excluir(monte, 27);
+	printf("\n");
+	
+	while(cont<6){// DISTRIBUINDO 6 PEÇAS INICIAIS PRO JOGADOR
+		i = abs(rand()%(28-cont));
+		aux = copiar(monte, i);
+		jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
+		cont++;
+		monte = excluir(monte, aux->numberLeft, aux->numberRight);
+	}
+	while(cont2<6){//PRENCHE A MÃO DO bot.
+		i = abs(rand()%(28-cont));
+		aux = copiar(monte, i);
+		bot = insere_fim(bot, aux->numberLeft, aux->numberRight);
+		cont2++;
+		monte = excluir(monte, aux->numberLeft, aux->numberRight);
+	}
+
+	i = abs(rand()%16); //ESCOLHE UMA PEÇA ALEATÓRIA PRA COMEÇAR A PARTIDA.
+	aux = copiar(monte, i);
+	mesa = insere_fim(mesa, aux->numberLeft, aux->numberRight);
+	monte = excluir(monte, aux->numberLeft, aux->numberRight);
+	
 	imprime(monte);
+	printf("\n");
+	printf("\tJOGADOR:\n");
+	imprime(jogador);
+	printf("\tBOT:\n");
+	imprime(bot);
+	printf("\tMESA:\n");
+	imprime(mesa);
+
 	return 0;
 }
