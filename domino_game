@@ -71,20 +71,30 @@ TppecaDomino *insere_fim(TppecaDomino *l, int num1, int num2){
 
 TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 	TppecaDomino *aux = l, *prox, *anterior = NULL;
-	while(aux->numberLeft != num1 || aux->numberRight || aux != NULL){
-		aux = aux->right;
+	if(num1 == aux->numberLeft && num2 == aux->numberRight && aux->left == NULL){
+		aux = l->right;
+		aux->left = NULL;
+		free(l);
+		return aux;
 	}
-	if(anterior != NULL){
+	while(num1 != aux->numberLeft || num2 != aux->numberRight || aux != NULL){
+		if(num1 == aux->numberLeft || num2 == aux->numberRight){
+			anterior = aux;
+			aux = aux->right;
+			prox = aux->right;
+		} else {
+			printf("Número não encontrado.\n");
+			return l;
+		}
+	}
+	if(aux->right == NULL){
 		anterior = aux->left;
-		prox = aux->right;
-		anterior->right = prox;
-		prox->left = anterior;
-	} else if(aux == NULL){
+		anterior->right = NULL;
+		free(aux);
 		return l;
-	} else {
-		l = aux->right;	
-		l->left = NULL;
-	}	
+	}
+	anterior->right = prox;
+	prox->left = anterior;
 	free(aux);
 	return l;
 }
@@ -100,13 +110,18 @@ void imprime(TppecaDomino *l){
 		if(flag == 7) printf("\n");
 		if(flag == 7) flag = 0;
 	}
+	printf("\n");
 }
 
-void pescar()
+
 
 int main(){
+	system("clear");
 	TppecaDomino *monte = inicializa();
 	monte = cria_pecas();
+	imprime(monte);
+	monte = excluir(monte, 6, 8);
+	printf("\n\n");
 	imprime(monte);
 	return 0;
 }
