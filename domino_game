@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-/* 
-	Abreviações:
-	ptr = Ponteiro
-
-
-*/
-
-
+#include <time.h>
 
 typedef struct _pecaDomino{
 	int numberRight;
@@ -18,48 +10,102 @@ typedef struct _pecaDomino{
 }TppecaDomino;
 
 TppecaDomino *inicializa(){
+	return NULL;
+}
+
+TppecaDomino *cria_pecas(){
 	int i, j;
-	TppecaDomino *novo, *p, *inicio;
-	for(i = 0; i <= 6; i++)
-	{
-		j=i;
-		for(;j <= 6; j++) // Laço para passar do 0:0 para o 1:1
-		{
-			novo = (TppecaDomino *)malloc(sizeof(TppecaDomino));// Cria um novo no para cada uma das peças
-			if(i == 0 && j == 0)
-			{
-				novo->numberLeft = i; // Dá o valor para a peça da esquerda
-				novo->numberRight = j;	// Dá o valor para a peça da direita
-				novo->right = NULL; // Guarda o endereço da peça da direita
-				novo->left = NULL; // Guarda o endereço da peça da esquerda
-				p = novo;
-				inicio = novo;
-			}else
-			{
-				novo->numberLeft = i; // Dá o valor para a peça da esquerda
-				novo->numberRight = j;	// Dá o valor para a peça da direita
-				novo->right = NULL; // Guarda o endereço da peça da direita
-				novo->left = p; // Guarda o endereço da peça da esquerda
-				p->right = novo;
-				p = novo;
-			}
+	TppecaDomino *novo = (TppecaDomino *)malloc(sizeof(TppecaDomino));
+	novo->left = NULL;
+	TppecaDomino *aux = novo, *anterior = novo;
+	novo->numberRight = 0;
+	novo->numberLeft  = 0;
+
+	for(i=1; i<=6; i++){
+		for(j=0; j<=i; j++){
+			aux = (TppecaDomino *)malloc(sizeof(TppecaDomino));
+			aux->numberRight = j;
+			aux->numberLeft = i;
+			aux->left = anterior;
+			anterior->right = aux;
+			anterior = aux;
 		}
 	}
-	return(inicio);
+
+	aux->right = NULL;
+	return novo;
 }
 
-void Imprimir(TppecaDomino *pecas){
-	TppecaDomino *i = pecas;
-	for(i = pecas; i != NULL; i = i->left)
-	{	
-		printf("%d:%d\n", i->numberLeft, i->numberRight);
+TppecaDomino *insere_inicio(TppecaDomino *l, int num1, int num2){
+	TppecaDomino *aux = l, *novo = (TppecaDomino *)malloc(sizeof(TppecaDomino));
+	if(aux == NULL){
+		novo->numberLeft = num1;
+		novo->numberRight = num2;
+		novo->left = NULL;
+		novo->right = NULL;
+		return novo;
+	}
+	while(aux != NULL){
+		aux = aux->right;
+	}
+	novo->numberLeft = num1;
+	novo->numberRight = num2;
+	novo->right = l;
+	novo->left = NULL;
+	l->left = novo;
+	return novo;
+}
+
+TppecaDomino *insere_fim(TppecaDomino *l, int num1, int num2){
+	TppecaDomino *aux = l;
+	if(aux == NULL){
+		l = insere_inicio(l, num1, num2);
+		return l;
+	}
+	while(aux->right != NULL){
+		aux = aux->right;
+	}
+	aux->right = insere_inicio(aux->right, num1, num2);
+	return l;
+}
+
+TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
+	TppecaDomino *aux = l, *prox, *anterior = NULL;
+	while(aux->numberLeft != num1 || aux->numberRight || aux != NULL){
+		aux = aux->right;
+	}
+	if(anterior != NULL){
+		anterior = aux->left;
+		prox = aux->right;
+		anterior->right = prox;
+		prox->left = anterior;
+	} else if(aux !=) {
+
+	}
+	l = aux->right;	
+		l->left = NULL;	
+	free(aux);
+	return l;
+
+}
+
+void imprime(TppecaDomino *l){
+	TppecaDomino *aux = l;
+	int flag = 0;
+
+	while(aux != NULL){
+		printf("|%d||%d| ", aux->numberLeft, aux->numberRight);
+		aux = aux->right;
+		flag++;
+		if(flag == 7) printf("\n");
+		if(flag == 7) flag = 0;
 	}
 }
 
-int main(){
-	TppecaDomino *monte;
 
-	monte = inicializa();
-	Imprimir(monte);
+int main(){
+	TppecaDomino *monte = inicializa();
+	monte = cria_pecas();
+	imprime(monte);
 	return 0;
 }
