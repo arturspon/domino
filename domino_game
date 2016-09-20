@@ -79,14 +79,14 @@ TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 		prox = aux->right;
 		anterior->right = prox;
 		prox->left = anterior;
-	} else if(aux !=) {
-
-	}
-	l = aux->right;	
-		l->left = NULL;	
+	} else if(aux == NULL){
+		return l;
+	} else {
+		l = aux->right;	
+		l->left = NULL;
+	}	
 	free(aux);
 	return l;
-
 }
 
 void imprime(TppecaDomino *l){
@@ -102,6 +102,7 @@ void imprime(TppecaDomino *l){
 	}
 }
 
+void pescar()
 
 int main(){
 	TppecaDomino *monte = inicializa();
