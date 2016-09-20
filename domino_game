@@ -77,15 +77,10 @@ TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 		free(l);
 		return aux;
 	}
-	while(num1 != aux->numberLeft || num2 != aux->numberRight || aux != NULL){
-		if(num1 == aux->numberLeft || num2 == aux->numberRight){
-			anterior = aux;
-			aux = aux->right;
-			prox = aux->right;
-		} else {
-			printf("Número não encontrado.\n");
-			return l;
-		}
+	while(num1 != aux->numberLeft || num2 != aux->numberRight){
+		anterior = aux;
+		aux = aux->right;
+		prox = aux->right;		
 	}
 	if(aux->right == NULL){
 		anterior = aux->left;
@@ -120,7 +115,7 @@ int main(){
 	TppecaDomino *monte = inicializa();
 	monte = cria_pecas();
 	imprime(monte);
-	monte = excluir(monte, 6, 8);
+	monte = excluir(monte, 6, 4);
 	printf("\n\n");
 	imprime(monte);
 	return 0;
