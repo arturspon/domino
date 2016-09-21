@@ -106,7 +106,7 @@ TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 TppecaDomino *copiar(TppecaDomino *l, int num){
 	TppecaDomino *aux = l;
 	int i;
-	for(i = 0; i<=num; i++){
+	for(i = 0; i<num; i++){
 		aux = aux->right;
 	}
 	return aux;
@@ -132,16 +132,17 @@ int main(){
 	monte = cria_pecas();
 	imprime(monte);
 	printf("\n");
+	srand(clock());
 	
-	while(cont<6){// DISTRIBUINDO 6 PEÇAS INICIAIS PRO JOGADOR
+	while(cont < 6){// DISTRIBUINDO 6 PEÇAS INICIAIS PRO JOGADOR
 		i = abs(rand()%(28-cont));
 		aux = copiar(monte, i);
 		jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
 		cont++;
 		monte = excluir(monte, aux->numberLeft, aux->numberRight);
 	}
-	while(cont2<6){//PRENCHE A MÃO DO bot.
-		i = abs(rand()%(28-cont));
+	while(cont2 < 6){//PRENCHE A MÃO DO bot.
+		i = abs(rand()%(22-cont));
 		aux = copiar(monte, i);
 		bot = insere_fim(bot, aux->numberLeft, aux->numberRight);
 		cont2++;
