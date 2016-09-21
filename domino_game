@@ -127,7 +127,7 @@ void imprime(TppecaDomino *l){
 
 int main(){
 	system("clear");
-	TppecaDomino *monte, *jogador = NULL, *aux, *bot = NULL, *mesa = NULL;//, *jogador, *cpu, *mesa;
+	TppecaDomino *monte, *jogador = NULL, *aux, *bot = NULL, *mesa = NULL;
 	int i, cont = 0, cont2 = 0;
 	monte = cria_pecas();
 	imprime(monte);
