@@ -112,11 +112,11 @@ TppecaDomino *copiar(TppecaDomino *l, int num){
 }
 
 
-/*	
+/*---------------------------------------------------	
 	Return 0 = Jogada inválida
 	Return 1 = Jogada válida em um dos lados.
 	Return 2 = Jogada válida em ambos os lados.
-*/
+---------------------------------------------------*/
 int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	TppecaDomino *aux = jogada, *aux_mesa = mesa;
 	int inicio = 0, final = 0;
@@ -145,6 +145,12 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	}
 	return 0;
 }
+
+/*---------------------------------------------------
+	lado == 0 quando só se pode inserir de um lado
+	lado == 1 para inserir do lado esquerdo
+	lado == 2 para inserir do lado direito
+---------------------------------------------------*/
 
 TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
 	TppecaDomino *aux = mesa;
@@ -228,6 +234,13 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 }
 
 TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
+	TppecaDomino *aux_monte = monte, *aux_mao = mao;
+	mao = insere_fim(mao, monte->numberLeft, monte->numberRight);
+	monte = excluir(monte, monte->numberLeft, monte->numberRight);
+	return mao;
+}
+
+/*TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
 	TppecaDomino *aux_monte = monte, *aux_mao = mao, *ant, *prox;
 	int cont = sizeof(monte), i = abs(rand() % cont), x;
 	for(x = 0; x <= i; x++){ //mudamos aqui, tiramos o "="
@@ -251,7 +264,7 @@ TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
 	aux_monte->left = aux_mao;
 	aux_monte->right = NULL;
 	return mao;
-}
+}*/
 
 int contar_elementos(TppecaDomino *l){
 	TppecaDomino *aux = l;
