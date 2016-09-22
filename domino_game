@@ -102,7 +102,6 @@ TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 	return l;
 }
 
-
 TppecaDomino *copiar(TppecaDomino *l, int num){
 	TppecaDomino *aux = l;
 	int i;
@@ -112,59 +111,93 @@ TppecaDomino *copiar(TppecaDomino *l, int num){
 	return aux;
 }
 
-void imprime(TppecaDomino *l){
-	TppecaDomino *p = l;
-	int aux = 0;
-	while(p != NULL){
-		printf("|%d|%d| ", p->numberLeft, p->numberRight);
-		aux++;
-		if(aux == 6) printf("\n");
-		if(aux == 6) aux = 0;
-		p = p->right;
-	}
-	printf("\n");
-}
 
+/*	
+	Return 0 = Jogada inválida
+	Return 1 = Jogada válida em um dos lados.
+	Return 2 = Jogada válida em ambos os lados.
+*/
 int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	TppecaDomino *aux = jogada, *aux_mesa = mesa;
-	int x, y, teste = 0;
-	if(jogada->numberLeft == 0 && jogada->numberRight == 0) return 1;
-	if(aux->numberLeft == aux_mesa->numberLeft) return 1;
-	else if(aux->numberRight == aux_mesa->numberLeft) return 1;
-	while(aux_mesa->right != NULL){
+	int inicio = 0, final = 0;
+	if(jogada->numberLeft == 0 && jogada->numberRight == 0){
+		return 2; //Valida a jogada em ambos os lados pois 0:0 = Coringa.
+	}
+	if(aux->numberLeft == aux_mesa->numberLeft){
+		inicio++;	
+	} 
+	else if(aux->numberRight == aux_mesa->numberLeft){
+		inicio++;
+	}
+	while(aux_mesa->right != NULL){ //Encontra o último elemento da lista.
 		aux_mesa = aux_mesa->right;
 	}
-	if(aux->numberLeft == aux_mesa->numberRight) return 1;
-	else if(aux->numberRight == aux_mesa->numberRight) return 1;
-
+	if(aux->numberLeft == aux_mesa->numberRight){
+		final++;
+	}
+	else if(aux->numberRight == aux_mesa->numberRight){
+		final++;
+	}
+	if(inicio > 0 && final > 0){
+		return 2;
+	}else if(inicio > 0 || final > 0){
+		return 1;
+	}
 	return 0;
 }
 
-TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada){
+TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
 	TppecaDomino *aux = mesa;
-	if(aux->left == NULL && (jogada->numberLeft == 0 && jogada->numberRight == 0)){
-		aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-		return aux;
-	}else if(aux->left == NULL && jogada->numberRight == aux->numberLeft){
-		aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-		return aux;
-	}else if(aux->left == NULL && jogada->numberLeft == aux->numberLeft){
-		aux = insere_inicio(aux, jogada->numberRight, jogada->numberLeft);
-		return aux;
-	}
-	while(aux->right != NULL){
-		aux = aux->right;
-	}
-	if(jogada->numberLeft == 0 && jogada->numberRight == 0){
-		aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+	if(lado == 1){
+		if(aux->left == NULL && (jogada->numberLeft == 0 && jogada->numberRight == 0)){
+			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
+			return aux;
+		}else if(aux->left == NULL && jogada->numberRight == aux->numberLeft){
+			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
+			return aux;
+		}else if(aux->left == NULL && jogada->numberLeft == aux->numberLeft){
+			aux = insere_inicio(aux, jogada->numberRight, jogada->numberLeft);
+			return aux;
+		}
+	}else if(lado == 2){
+		while(aux->right != NULL){
+			aux = aux->right;
+		}
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){
+			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+			return mesa;
+		}else if(jogada->numberLeft == aux->numberRight){
+			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+			return mesa;
+		}else{
+			aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
+		}		
 		return mesa;
-	}else if(jogada->numberLeft == aux->numberRight){
-		aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+	}else if(lado == 0){		
+		if(aux->left == NULL && (jogada->numberLeft == 0 && jogada->numberRight == 0)){
+			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
+			return aux;
+		}else if(aux->left == NULL && jogada->numberRight == aux->numberLeft){
+			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
+			return aux;
+		}else if(aux->left == NULL && jogada->numberLeft == aux->numberLeft){
+			aux = insere_inicio(aux, jogada->numberRight, jogada->numberLeft);
+			return aux;
+		}
+		while(aux->right != NULL){
+			aux = aux->right;
+		}
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){
+			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+			return mesa;
+		}else if(jogada->numberLeft == aux->numberRight){
+			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+			return mesa;
+		}else{
+			aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
+		}		
 		return mesa;
-	}else{
-		aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
 	}
-	
 	return mesa;
 }
 
@@ -194,29 +227,29 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	return mao;
 }
 
-TppecaDomino *pesca(TppecaDomino *compra, TppecaDomino *mao){
-	TppecaDomino *aux = compra, *aux2 = mao, *ant, *prox;
-	int cont = sizeof(compra), i = abs(rand() % cont), x;
-	for(x = 0; x <= i; x++){
-		aux = aux->right;
+TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
+	TppecaDomino *aux_monte = monte, *aux_mao = mao, *ant, *prox;
+	int cont = sizeof(monte), i = abs(rand() % cont), x;
+	for(x = 0; x <= i; x++){ //mudamos aqui, tiramos o "="
+		aux_monte = aux_monte->right;
 	}
-	if(aux->right == NULL){
-		ant = aux->left;
+	if(aux_monte->right == NULL){
+		ant = aux_monte->left;
 		ant->right = NULL;
-	} else if(aux->left == NULL){
-		prox = aux->right;
+	} else if(aux_monte->left == NULL){
+		prox = aux_monte->right;
 	} else {
-		ant = aux->left;
-		prox = aux->right;
+		ant = aux_monte->left;
+		prox = aux_monte->right;
 		ant->right = prox;
 		prox->left = ant;
 	}
-	while(aux2->right != NULL){
-		aux2 = aux2->right;
+	while(aux_mao->right != NULL){
+		aux_mao = aux_mao->right;
 	}
-	aux2->right = aux;
-	aux->left = aux2;
-	aux->right = NULL;
+	aux_mao->right = aux_monte;
+	aux_monte->left = aux_mao;
+	aux_monte->right = NULL;
 	return mao;
 }
 
@@ -230,10 +263,23 @@ int contar_elementos(TppecaDomino *l){
 	return elementos;
 }
 
+void imprime(TppecaDomino *l){
+	TppecaDomino *p = l;
+	int aux = 0;
+	while(p != NULL){
+		printf("|%d|%d| ", p->numberLeft, p->numberRight);
+		aux++;
+		if(aux == 6) printf("\n");
+		if(aux == 6) aux = 0;
+		p = p->right;
+	}
+	printf("\n");
+}
+
 int main(){
 	system("reset");
 	TppecaDomino *monte, *jogador = NULL, *aux, *bot = NULL, *mesa = NULL, *pecajogada;
-	int i, cont = 0, cont2 = 0, escolha_peca, escolha_lado, jogada_verifica = 0, numero_pecas, jogo_ativo = 1, k = 0;
+	int i, cont = 0, cont2 = 0, escolha_lado, numero_pecas, jogo_ativo = 1, k = 0;
 	monte = cria_pecas();
 	imprime(monte);
 	printf("\n");
@@ -280,20 +326,43 @@ int main(){
 			pecajogada = jogador;
 			for(i = 1; i<pecaescolhida; i++){ pecajogada = pecajogada->right; }
 			pecaescolhida = valida_jogada(mesa, pecajogada);
-			if(pecaescolhida){
-				mesa = insere_mesa(mesa, pecajogada);
+			if(pecaescolhida == 1){
+				mesa = insere_mesa(mesa, pecajogada, 0);
 				jogador = remove_peca_jogada(jogador, pecajogada);
+				system("clear");
 				printf("\n\tMESA:\n");
 				imprime(mesa);
 				printf("\n\tMÃO DO JOGADOR:\n");
 				imprime(jogador);
-			}else{
-				printf("\n\nErro.\n");
+			}else if(pecaescolhida == 2){
+				menu_lado:
+				printf("Em qual lado deseja inserir?\n(1 = Esquerdo / 2 = Direito)\n");
+				scanf("%d", &escolha_lado);
+				if(escolha_lado == 1){
+					mesa = insere_mesa(mesa, pecajogada, 1);
+					jogador = remove_peca_jogada(jogador, pecajogada);
+					system("clear");
+					printf("\n\tMESA:\n");
+					imprime(mesa);
+					printf("\n\tMÃO DO JOGADOR:\n");
+					imprime(jogador);
+				}else if(escolha_lado == 2){
+					mesa = insere_mesa(mesa, pecajogada, 2);
+					jogador = remove_peca_jogada(jogador, pecajogada);
+					system("clear");
+					printf("\n\tMESA:\n");
+					imprime(mesa);
+					printf("\n\tMÃO DO JOGADOR:\n");
+					imprime(jogador);
+				}else{
+					printf("Erro. Escolha 1 ou 2.\n");
+					goto menu_lado;
+				}
 			}
 		}else if(pecaescolhida == 0){
 			int pc = 0;
 			do{
-
+				system("clear");
 				jogador = pesca(monte, jogador);
 				printf("\n\tMONTE:\n");
 				imprime(monte);
@@ -316,7 +385,3 @@ int main(){
 	
 	return 0;
 }
-
-
-
-
