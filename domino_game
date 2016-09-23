@@ -233,13 +233,6 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	return mao;
 }
 
-TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
-	TppecaDomino *aux_monte = monte, *aux_mao = mao;
-	mao = insere_fim(mao, monte->numberLeft, monte->numberRight);
-	monte = excluir(monte, monte->numberLeft, monte->numberRight);
-	return mao;
-}
-
 /*TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
 	TppecaDomino *aux_monte = monte, *aux_mao = mao, *ant, *prox;
 	int cont = sizeof(monte), i = abs(rand() % cont), x;
@@ -373,10 +366,22 @@ int main(){
 				}
 			}
 		}else if(pecaescolhida == 0){
-			int pc = 0;
+			int pc = 0, random, tam;
 			do{
 				system("clear");
-				jogador = pesca(monte, jogador);
+				tam = contar_elementos(monte)-2;
+				printf("Tamanho = %d\n", tam);
+				if(tam > 0){
+					random = abs(rand()%(tam));
+					printf("Random = %d\n", random);
+					aux = copiar(monte, random);
+					jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
+					monte = excluir(monte, aux->numberLeft, aux->numberRight);
+				}else{
+					aux = copiar(monte, 0);
+					jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
+					monte = excluir(monte, aux->numberLeft, aux->numberRight);
+				}
 				printf("\n\tMONTE:\n");
 				imprime(monte);
 				printf("\n\tMESA:\n");
