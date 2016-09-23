@@ -131,10 +131,8 @@ TppecaDomino *copiar(TppecaDomino *l, int num){
 ---------------------------------------------------*/
 int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	TppecaDomino *aux = jogada, *aux_mesa = mesa;
-	int inicio = 0, final = 0, coringa = 0;
-	if(aux_mesa->numberLeft == 0 && aux_mesa->numberRight == 0){
-		coringa++;
-	}else if(jogada->numberLeft == 0 && jogada->numberRight == 0){
+	int inicio = 0, final = 0;
+	if(jogada->numberLeft == 0 && jogada->numberRight == 0){
 		return 2; //Valida a jogada em ambos os lados pois 0:0 = Coringa.
 	}
 	if(aux->numberLeft == aux_mesa->numberLeft){
@@ -146,9 +144,6 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	while(aux_mesa->right != NULL){ //Encontra o último elemento da lista.
 		aux_mesa = aux_mesa->right;
 	}
-	if(aux_mesa->numberLeft == 0 && aux_mesa->numberRight == 0){
-		coringa++;
-	}
 	if(aux->numberLeft == aux_mesa->numberRight){
 		final++;
 	}
@@ -157,10 +152,6 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	}
 	if(inicio > 0 && final > 0){
 		return 2;
-	}else if((inicio > 0 || final > 0) && coringa > 0){
-		return 2;
-	}else if(coringa > 0){
-		return 1;
 	}else if(inicio > 0 || final > 0){
 		return 1;
 	}
@@ -175,11 +166,7 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 
 TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
 	TppecaDomino *aux = mesa;
-	if(lado == 1){
-		if(aux->numberLeft == 0 && aux->numberRight == 0){
-			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}
+	if(lado == 1 || lado == 0){
 		if(aux->left == NULL && (jogada->numberLeft == 0 && jogada->numberRight == 0)){
 			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
 			return aux;
@@ -190,58 +177,22 @@ TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
 			aux = insere_inicio(aux, jogada->numberRight, jogada->numberLeft);
 			return aux;
 		}
-	}else if(lado == 2){
-		while(aux->right != NULL){
-			aux = aux->right;
-		}
-		if(aux->numberLeft == 0 && aux->numberRight == 0){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}
-		if(jogada->numberLeft == 0 && jogada->numberRight == 0){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
-			return mesa;
-		}else if(jogada->numberLeft == aux->numberRight){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
-			return mesa;
-		}else{
-			aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
-		}		
-		return mesa;
-	}else if(lado == 0){		
-		if(aux->numberLeft == 0 && aux->numberRight == 0){
-			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}
-		if(aux->left == NULL && (jogada->numberLeft == 0 && jogada->numberRight == 0)){
-			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}else if(aux->left == NULL && jogada->numberRight == aux->numberLeft){
-			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}else if(aux->left == NULL && jogada->numberLeft == aux->numberLeft){
-			aux = insere_inicio(aux, jogada->numberRight, jogada->numberLeft);
-			return aux;
-		}
-		while(aux->right != NULL){
-			aux = aux->right;
-		}
-		if(aux->numberLeft == 0 && aux->numberRight == 0){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}
-		if(jogada->numberLeft == 0 && jogada->numberRight == 0){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
-			return mesa;
-		}else if(jogada->numberLeft == aux->numberRight){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
-			return mesa;
-		}else{
-			aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
-		}		
-		return mesa;
 	}
-	return mesa;
+	if(lado == 2 || lado == 0){
+		while(aux->right != NULL){
+			aux = aux->right;
+		}
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){
+			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+			return mesa;
+		}else if(jogada->numberLeft == aux->numberRight){
+			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+			return mesa;
+		}else{
+			aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
+		}		
+	}
+		return mesa;
 }
 
 TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
@@ -270,9 +221,16 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	return mao;
 }
 
-/*TppecaDomino *bot_joga(TppecaDomino *mesa){
-	TppecaDomino *aux_mesa = mesa;
-	if(valida_jogada(mesa, jogada) == 0)	
+/*TppecaDomino bot(TppecaDomino *mao, TppecaDomino *mesa, TppecaDomino *compra){
+	TppecaDomino *aux_mao = mao, *aux_compra = compra, *aux_mesa = mesa;
+	int mesa_left, mesa_right;
+	if(aux_mesa != NULL){
+		mesa_left = aux_mesa->numberLeft;
+		while(aux_mesa->right != NULL){
+			aux_mesa = aux_mesa->right;
+		}
+		mesa_right = aux_mesa->numberRight;
+	}
 }*/
 
 void imprime(TppecaDomino *l){
