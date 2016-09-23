@@ -337,7 +337,7 @@ int main(){
 		printf("\nInforme o índice da peça que deseja jogar ou 0 para pescar: ");
 		int pecaescolhida;
 		numero_pecas = contar_elementos(jogador);
-		scanf("%d", &pecaescolhida);
+		while(scanf("%d", &pecaescolhida) != 1);					
 		if(pecaescolhida >= 1 && pecaescolhida <= numero_pecas){
 			pecajogada = jogador;
 			for(i = 1; i<pecaescolhida; i++){ pecajogada = pecajogada->right; }
