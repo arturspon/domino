@@ -271,14 +271,14 @@ int main(){
 	printf("\n");
 	srand(clock());
 	
-	while(cont < 6){ //Distribuição de 6 peças para o jogador.
+	while(cont < 6){// DISTRIBUINDO 6 PEÇAS INICIAIS PRO JOGADOR
 		i = abs(rand()%(28-cont));
 		aux = copiar(monte, i);
 		jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
 		cont++;
 		monte = excluir(monte, aux->numberLeft, aux->numberRight);
 	}
-	while(cont2 < 6){ //Distribuição de 6 peças para o bot.
+	while(cont2 < 6){//PRENCHE A MÃO DO BOT.
 		i = abs(rand()%(22-cont));
 		aux = copiar(monte, i);
 		bot = insere_fim(bot, aux->numberLeft, aux->numberRight);
@@ -286,7 +286,7 @@ int main(){
 		monte = excluir(monte, aux->numberLeft, aux->numberRight);
 	}
 
-	i = abs(rand()%16); //Insere uma peça aleatória na mesa para o início do jogo.
+	i = abs(rand()%16); //ESCOLHE UMA PEÇA ALEATÓRIA PRA COMEÇAR A PARTIDA.
 	aux = copiar(monte, i);
 	mesa = insere_fim(mesa, aux->numberLeft, aux->numberRight);
 	monte = excluir(monte, aux->numberLeft, aux->numberRight);
@@ -304,7 +304,7 @@ int main(){
 
 		//Interatividade do jogador
 		menu:
-		printf("\nInforme o índice da peça que deseja jogar ou 0 para pescar: ");
+		printf("\nInforme o índice da peça que deseja jogar ou se deseja pescar tecle 0: ");
 		int pecaescolhida;
 		numero_pecas = contar_elementos(jogador);
 		scanf("%d", &pecaescolhida);
@@ -346,10 +346,11 @@ int main(){
 				}
 			}
 		}else if(pecaescolhida == 0 && contar_elementos(monte)>0){
-			int pesca_escolha = 0, random, tam;
+			int pc = 0, random, tam;
 			do{
 				system("clear");
 				tam = contar_elementos(monte);
+				printf("Tamanho = %d\n", tam);
 				random = abs(rand()%(tam));
 				aux = copiar(monte, random);
 				jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
@@ -362,8 +363,8 @@ int main(){
 				imprime(jogador);
 				if(monte){
 					printf("Continuar pescando?\n Sim = 1 / Não = 2\n");
-					scanf("%d", &pesca_escolha);
-					if(pesca_escolha != 1 && pesca_escolha != 2){
+					scanf("%d", &pc);
+					if(pc != 1 && pc != 2){
 						printf("OPÇÃO INVÁLIDA\n");
 					}
 				}else{
@@ -371,9 +372,9 @@ int main(){
 					printf("Monte vazio!\n");
 					goto menu;
 				}
-			}while(pesca_escolha != 2);
-		} else {
-			printf("\nErro. Insira um índice entre 1 e %d\n", numero_pecas);
+			}while(pc != 2);
+		}else{
+			printf("\nOPÇÃO INVÁLIDA\n");
 			goto menu;
 		}
 	}
