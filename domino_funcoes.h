@@ -130,32 +130,25 @@ TppecaDomino *copiar(TppecaDomino *l, int num){
 	Return 2 = Jogada válida em ambos os lados.	
 ---------------------------------------------------*/
 int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
-	TppecaDomino *aux = jogada, *aux_mesa = mesa;
-	int inicio = 0, final = 0;
-	if(jogada->numberLeft == 0 && jogada->numberRight == 0){
+  TppecaDomino *aux = jogada, *aux_mesa = mesa;
+  int inicio = 0, final = 0;
+	if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // retorna 2, indicando que a peça pode ser posta nos dois lados da mesa
 		return 2; //Valida a jogada em ambos os lados pois 0:0 = Coringa.
 	}
-	if(aux->numberLeft == aux_mesa->numberLeft){
-		inicio++;	
-	} 
-	else if(aux->numberRight == aux_mesa->numberLeft){
-		inicio++;
-	}
+	if(aux->numberLeft == aux_mesa->numberLeft) inicio++;
+	else if(aux->numberRight == aux_mesa->numberLeft) inicio++;
+	
 	while(aux_mesa->right != NULL){ //Encontra o último elemento da lista.
 		aux_mesa = aux_mesa->right;
 	}
-	if(aux->numberLeft == aux_mesa->numberRight){
-		final++;
-	}
-	else if(aux->numberRight == aux_mesa->numberRight){
-		final++;
-	}
+	if(aux->numberLeft == aux_mesa->numberRight) final++;
+	else if(aux->numberRight == aux_mesa->numberRight) final++;
 	if(inicio > 0 && final > 0){
 		return 2;
 	}else if(inicio > 0 || final > 0){
 		return 1;
-	}
-	return 0;
+	} 
+  return 0;
 }
 
 /*---------------------------------------------------
@@ -165,34 +158,34 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 ---------------------------------------------------*/
 
 TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
-	TppecaDomino *aux = mesa;
-	if(lado == 1 || lado == 0){
-		if(aux->left == NULL && (jogada->numberLeft == 0 && jogada->numberRight == 0)){
+   TppecaDomino *aux = mesa;
+	if(lado == 1 || lado == 0){ //LADO DIREITO DA MESA SE POSSÍVEL
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // verifica se é o coringa que o jogador tem na mao
+			aux = insere_inicio(aux, 0, 0); // se sim, insere no lado esquerdo da mesa a peça |0||0|
+			return aux;
+		}else if(jogada->numberRight == aux->numberLeft){
 			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
 			return aux;
-		}else if(aux->left == NULL && jogada->numberRight == aux->numberLeft){
-			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
-			return aux;
-		}else if(aux->left == NULL && jogada->numberLeft == aux->numberLeft){
+		}else if(jogada->numberLeft == aux->numberLeft){
 			aux = insere_inicio(aux, jogada->numberRight, jogada->numberLeft);
 			return aux;
 		}
 	}
-	if(lado == 2 || lado == 0){
-		while(aux->right != NULL){
+	if(lado == 2 || lado == 0){ //LADO ESQUERDO DA MESA SE POSSÍVEL
+		while(aux->right != NULL){ // vai até o final da mesa;
 			aux = aux->right;
 		}
-		if(jogada->numberLeft == 0 && jogada->numberRight == 0){
-			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // verifica se é o coringa que será jogado
+			aux = insere_fim(aux, 0, 0); // insere o coringa no final da mesa
 			return mesa;
 		}else if(jogada->numberLeft == aux->numberRight){
 			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
 			return mesa;
-		}else{
+		}else if(jogada->numberRight == aux->numberRight){
 			aux = insere_fim(aux, jogada->numberRight, jogada->numberLeft);
-		}		
+		}	return mesa;
 	}
-		return mesa;
+	return mesa;
 }
 
 TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
@@ -221,17 +214,11 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	return mao;
 }
 
-/*TppecaDomino bot(TppecaDomino *mao, TppecaDomino *mesa, TppecaDomino *compra){
-	TppecaDomino *aux_mao = mao, *aux_compra = compra, *aux_mesa = mesa;
-	int mesa_left, mesa_right;
-	if(aux_mesa != NULL){
-		mesa_left = aux_mesa->numberLeft;
-		while(aux_mesa->right != NULL){
-			aux_mesa = aux_mesa->right;
-		}
-		mesa_right = aux_mesa->numberRight;
-	}
-}*/
+TppecaDomino bot(TppecaDomino *mao_bot, TppecaDomino *mesa, TppecaDomino *compra){
+	TppecaDomino *aux_mao = mao_bot, *aux_compra = compra, *aux_mesa = mesa;
+	int valida;
+	while(valida_jogada(mesa, aux_mao));
+}
 
 void imprime(TppecaDomino *l){
 	TppecaDomino *p = l;
