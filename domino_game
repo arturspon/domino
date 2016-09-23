@@ -370,11 +370,18 @@ int main(){
 			do{
 				system("clear");
 				tam = contar_elementos(monte)-2;
-				random = abs(rand()%(tam));
-				printf("Tamanho = %d\nRandom = %d\n", tam, random);
-				aux = copiar(monte, random);
-				jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
-				monte = excluir(monte, aux->numberLeft, aux->numberRight);
+				printf("Tamanho = %d\n", tam);
+				if(tam > 0){
+					random = abs(rand()%(tam));
+					printf("Random = %d\n", random);
+					aux = copiar(monte, random);
+					jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
+					monte = excluir(monte, aux->numberLeft, aux->numberRight);
+				}else{
+					aux = copiar(monte, 0);
+					jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
+					monte = excluir(monte, aux->numberLeft, aux->numberRight);
+				}
 				printf("\n\tMONTE:\n");
 				imprime(monte);
 				printf("\n\tMESA:\n");
