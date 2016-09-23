@@ -13,6 +13,16 @@ TppecaDomino *inicializa(){
 	return NULL;
 }
 
+int contar_elementos(TppecaDomino *l){
+	TppecaDomino *aux = l;
+	int elementos = 0;
+	while(aux != NULL){
+		elementos++;
+		aux = aux->right;		
+	}
+	return elementos;
+}
+
 TppecaDomino *cria_pecas(){
 	int i, j;
 	TppecaDomino *novo = (TppecaDomino *)malloc(sizeof(TppecaDomino));
@@ -80,10 +90,16 @@ TppecaDomino *insere_fim(TppecaDomino *l, int m, int n){
 TppecaDomino *excluir(TppecaDomino *l, int num1, int num2){
 	TppecaDomino *aux = l, *prox = NULL, *anterior;
 	if(num1 == aux->numberLeft && num2 == aux->numberRight && aux->left == NULL){
-		aux = l->right;
-		aux->left = NULL;
-		free(l);
-		return aux;
+		int tamanho = contar_elementos(aux);
+		if(tamanho>1){
+			aux = l->right;
+			aux->left = NULL;
+			free(l);
+			return aux;
+		}else{
+			free(l);
+			return NULL;
+		}
 	}
 	while(num1 != aux->numberLeft || num2 != aux->numberRight){
 		anterior = aux;
@@ -233,42 +249,6 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	return mao;
 }
 
-/*TppecaDomino *pesca(TppecaDomino *monte, TppecaDomino *mao){
-	TppecaDomino *aux_monte = monte, *aux_mao = mao, *ant, *prox;
-	int cont = sizeof(monte), i = abs(rand() % cont), x;
-	for(x = 0; x <= i; x++){ //mudamos aqui, tiramos o "="
-		aux_monte = aux_monte->right;
-	}
-	if(aux_monte->right == NULL){
-		ant = aux_monte->left;
-		ant->right = NULL;
-	} else if(aux_monte->left == NULL){
-		prox = aux_monte->right;
-	} else {
-		ant = aux_monte->left;
-		prox = aux_monte->right;
-		ant->right = prox;
-		prox->left = ant;
-	}
-	while(aux_mao->right != NULL){
-		aux_mao = aux_mao->right;
-	}
-	aux_mao->right = aux_monte;
-	aux_monte->left = aux_mao;
-	aux_monte->right = NULL;
-	return mao;
-}*/
-
-int contar_elementos(TppecaDomino *l){
-	TppecaDomino *aux = l;
-	int elementos = 1;
-	do{
-		elementos++;
-		aux = aux->right;		
-	}while(aux != NULL);
-	return elementos;
-}
-
 void imprime(TppecaDomino *l){
 	TppecaDomino *p = l;
 	int aux = 0;
@@ -342,7 +322,7 @@ int main(){
 				imprime(jogador);
 			}else if(pecaescolhida == 2){
 				menu_lado:
-				printf("Em qual lado deseja inserir?\n(1 = Esquerdo / 2 = Direito)\n");
+				printf("Emq ual lado deseja inserir?\n(1 = Esquerdo / 2 = Direito)\n");
 				scanf("%d", &escolha_lado);
 				if(escolha_lado == 1){
 					mesa = insere_mesa(mesa, pecajogada, 1);
@@ -365,40 +345,37 @@ int main(){
 					goto menu_lado;
 				}
 			}
-		}else if(pecaescolhida == 0){
+		}else if(pecaescolhida == 0 && contar_elementos(monte)>0){
 			int pc = 0, random, tam;
 			do{
 				system("clear");
-				tam = contar_elementos(monte)-2;
-				printf("Tamanho = %d\n", tam);
-				if(tam > 0){
-					random = abs(rand()%(tam));
-					printf("Random = %d\n", random);
-					aux = copiar(monte, random);
-					jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
-					monte = excluir(monte, aux->numberLeft, aux->numberRight);
-				}else{
-					aux = copiar(monte, 0);
-					jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
-					monte = excluir(monte, aux->numberLeft, aux->numberRight);
-				}
+				tam = contar_elementos(monte);
+				random = abs(rand()%(tam));
+				aux = copiar(monte, random);
+				jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
+				monte = excluir(monte, aux->numberLeft, aux->numberRight);
 				printf("\n\tMONTE:\n");
 				imprime(monte);
 				printf("\n\tMESA:\n");
 				imprime(mesa);
 				printf("\n\tMÃO DO JOGADOR:\n");
 				imprime(jogador);
-				printf("Continuar pescando?\n Sim = 1 / Não = 2\n");
-				scanf("%d", &pc);
+				if(monte){
+					printf("Continuar pescando?\n Sim = 1 / Não = 2\n");
+					scanf("%d", &pc);
 					if(pc != 1 && pc != 2){
 						printf("OPÇÃO INVÁLIDA\n");
 					}
+				}else{
+					free(monte);
+					printf("Monte vazio!\n");
+					goto menu;
+				}
 			}while(pc != 2);
 		} else {
 			printf("\nOPÇÃO INVÁLIDA\n");
 			goto menu;
 		}
-	k++;
 	}
 	
 	return 0;
