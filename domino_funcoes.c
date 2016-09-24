@@ -411,30 +411,6 @@ void printar(Asciiart *peca){
 	}while(p != NULL);
 }
 
-/*id printar(Asciiart *l){
-	TppecaVector *aux = l, *p = NULL;
-	int i, x, count = 0;
-	do{
-		for(i=0; i < 5;i++){
-			while(aux != NULL){
-				for(x=0; x<17; x++){
-					printf("%c", aux->linha[i][x]);
-				}
-				count++;
-				p = aux->prox;
-				if(count>8){
-					break;
-				}
-				aux = aux->prox;
-			}
-			count = 0;
-			printf("\n");
-			aux = l;
-		}
-		l = p;
-	}while(p != NULL);
-}*/
-
 void logo_uffs(){                                                                                
 	printf("UUUUUUUU     UUUUUUUUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF   SSSSSSSSSSSSSSS\n");
 	printf("U::::::U     U::::::UF::::::::::::::::::::FF::::::::::::::::::::F SS:::::::::::::::S\n");
@@ -471,7 +447,3 @@ printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░   
 printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
 printf("\n\n\tPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
 }                   
-                                                                                    
-                                                                                    
-                                                                                    
-                                                                                    
