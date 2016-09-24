@@ -388,20 +388,52 @@ Asciiart *chamardesenho(TppecaDomino *l){
 }
 
 void printar(Asciiart *peca){
-	Asciiart *aux_peca = peca;
-	int i, j;
-	for(i=0;i<5;i++){
-		printf("\n");
-		while(aux_peca != NULL){
-			for(j=0;j<22;j++){
-				printf("%c", aux_peca->desenho[i][j]);
+	Asciiart *aux_peca = peca, *p=NULL;
+	int cont=1, i, j;
+	do{
+		for(i=0;i<5;i++){
+			while(aux_peca != NULL){
+				for(j=0;j<22;j++){
+					printf("%c", aux_peca->desenho[i][j]);
+				}
+				cont++;
+				p = aux_peca->prox;
+				if(cont>7){
+					break;
+				}
+				aux_peca = aux_peca->prox;
 			}
-			aux_peca = aux_peca->prox;
+			cont = 1;
+			printf("\n");	
+			aux_peca = peca;
 		}
-	aux_peca = peca;
-	}
-	printf("\n");
+		peca = p;
+	}while(p != NULL);
 }
+
+/*id printar(Asciiart *l){
+	TppecaVector *aux = l, *p = NULL;
+	int i, x, count = 0;
+	do{
+		for(i=0; i < 5;i++){
+			while(aux != NULL){
+				for(x=0; x<17; x++){
+					printf("%c", aux->linha[i][x]);
+				}
+				count++;
+				p = aux->prox;
+				if(count>8){
+					break;
+				}
+				aux = aux->prox;
+			}
+			count = 0;
+			printf("\n");
+			aux = l;
+		}
+		l = p;
+	}while(p != NULL);
+}*/
 
 void logo_uffs(){                                                                                
 	printf("UUUUUUUU     UUUUUUUUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF   SSSSSSSSSSSSSSS\n");
@@ -439,3 +471,7 @@ printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░   
 printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
 printf("\n\n\tPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
 }                   
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
