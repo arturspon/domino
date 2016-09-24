@@ -291,12 +291,47 @@ void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 	}
 	printf("\nOBS: Jogador com menos pontos vence.\n");
 }
+void logo_uffs(){                                                                                
+	printf("UUUUUUUU     UUUUUUUUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF   SSSSSSSSSSSSSSS\n");
+	printf("U::::::U     U::::::UF::::::::::::::::::::FF::::::::::::::::::::F SS:::::::::::::::S\n");
+	printf("U::::::U     U::::::UF::::::::::::::::::::FF::::::::::::::::::::FS:::::SSSSSS::::::S\n");
+	printf("UU:::::U     U:::::UUFF::::::FFFFFFFFF::::FFF::::::FFFFFFFFF::::FS:::::S     SSSSSSS\n");
+	printf("U:::::U     U:::::U   F:::::F       FFFFFF  F:::::F       FFFFFFS:::::S            \n");
+	printf("U:::::D     D:::::U   F:::::F               F:::::F             S:::::S            \n");
+	printf(" U:::::D     D:::::U   F::::::FFFFFFFFFF     F::::::FFFFFFFFFF    S::::SSSS         \n");
+	printf(" U:::::D     D:::::U   F:::::::::::::::F     F:::::::::::::::F     SS::::::SSSSS    \n");
+	printf(" U:::::D     D:::::U   F:::::::::::::::F     F:::::::::::::::F       SSS::::::::SS  \n");
+	printf(" U:::::D     D:::::U   F::::::FFFFFFFFFF     F::::::FFFFFFFFFF          SSSSSS::::S \n");
+	printf(" U:::::D     D:::::U   F:::::F               F:::::F                         S:::::S\n");
+	printf(" U::::::U   U::::::U   F:::::F               F:::::F                         S:::::S\n");
+	printf(" U:::::::UUU:::::::U FF:::::::FF           FF:::::::FF           SSSSSSS     S:::::S\n");
+	printf("  UU:::::::::::::UU  F::::::::FF           F::::::::FF           S::::::SSSSSS:::::S\n");
+	printf("    UU:::::::::UU    F::::::::FF           F::::::::FF           S:::::::::::::::SS \n");
+	printf("      UUUUUUUUU      FFFFFFFFFFF           FFFFFFFFFFF            SSSSSSSSSSSSSSS   \n");
 
-void logo_uffs(){
-	printf("                     ____    ____   _____ \n");  
-	printf("            |   |   |       |       |     \n");
-	printf("            |   |   |___    |___    |___  \n");
-	printf("            |   |   |       |           | \n");
-	printf("            |___|   |       |       ____| \n");
-	
-}
+	printf(" \t       _____   ____  __  __ _____ _   _  ____ \n");
+	printf(" \t      |  __   / __  |   /  |_   _|   | |/ __   \n");
+	printf(" \t      | |  | | |  | |    / | | | |   | | |  | |\n");
+	printf(" \t      | |  | | |  | | |  | | | | | . ` | |  | |\n");
+	printf(" \t      | |__| | |__| | |  | |_| |_| |   | |__| |\n");
+	printf(" \t      |_____/  ____/|_|  |_|_____|_|  _| ____/ \n");
+
+printf("\n\n ▄▄▄      ██▀███ ▄▄▄█████▓█    ██ ██▀███     ▓█████     ██ ▄█▄▄▄     ▓█████▄ █    ██ \n");
+printf("▒████▄   ▓██ ▒ ██▓  ██▒ ▓▒██  ▓██▓██ ▒ ██▒   ▓█   ▀     ██▄█▒████▄   ▒██▀ ██▌██  ▓██▒\n");
+printf("▒██  ▀█▄ ▓██ ░▄█ ▒ ▓██░ ▒▓██  ▒██▓██ ░▄█ ▒   ▒███      ▓███▄▒██  ▀█▄ ░██   █▓██  ▒██░\n");
+printf("░██▄▄▄▄██▒██▀▀█▄ ░ ▓██▓ ░▓▓█  ░██▒██▀▀█▄     ▒▓█  ▄    ▓██ █░██▄▄▄▄██░▓█▄   ▓▓█  ░██░\n");
+printf(" ▓█   ▓██░██▓ ▒██▒ ▒██▒ ░▒▒█████▓░██▓ ▒██▒   ░▒████▒   ▒██▒ █▓█   ▓██░▒████▓▒▒█████▓ \n");
+printf(" ▒▒   ▓▒█░ ▒▓ ░▒▓░ ▒ ░░  ░▒▓▒ ▒ ▒░ ▒▓ ░▒▓░   ░░ ▒░ ░   ▒ ▒▒ ▓▒▒   ▓▒█░▒▒▓  ▒░▒▓▒ ▒ ▒ \n");
+printf("  ▒   ▒▒ ░ ░▒ ░ ▒░   ░   ░░▒░ ░ ░  ░▒ ░ ▒░    ░ ░  ░   ░ ░▒ ▒░▒   ▒▒ ░░ ▒  ▒░░▒░ ░ ░ \n");
+printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░       ░      ░ ░░ ░ ░   ▒   ░ ░  ░ ░░░ ░ ░ \n");
+printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
+printf("\nPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
+}                                                                                 
+
+
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
