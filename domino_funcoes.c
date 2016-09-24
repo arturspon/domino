@@ -2,12 +2,26 @@ TppecaDomino *inicializa(){
 	return NULL;
 }
 
+Asciiart *inicializaasc(){
+	return NULL;
+}
+
 int contar_elementos(TppecaDomino *l){
 	TppecaDomino *aux = l;
 	int elementos = 0;
 	while(aux != NULL){
 		elementos++;
 		aux = aux->right;		
+	}
+	return elementos;
+}
+
+int contar_elementosasc(Asciiart *l){
+	Asciiart *aux = l;
+	int elementos = 0;
+	while(aux != NULL){
+		elementos++;
+		aux = aux->prox;		
 	}
 	return elementos;
 }
@@ -284,6 +298,111 @@ void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 	}
 	printf("\nOBS: Jogador com menos pontos vence.\n\n");
 }
+
+void desenhar(Asciiart *peca, int valor, int x, int fazer){
+	int i;
+	if(fazer == 1){
+		for(i=0;i<22;i++){
+			peca->desenho[0][i] = '-';
+			peca->desenho[4][i] = '-';
+			if(i == 0 || i == 10 || i == 11 || i == 21){
+				peca->desenho[1][i] = '|';
+				peca->desenho[2][i] = '|';
+				peca->desenho[3][i] = '|';
+			}else{
+				peca->desenho[1][i] = ' ';
+				peca->desenho[2][i] = ' ';
+				peca->desenho[3][i] = ' ';
+			}
+		}
+	}
+	switch(valor){
+		case 1:
+			peca->desenho[2][5+x] = 'o';
+			break;
+		case 2:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 3:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[2][5+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 4:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[1][8+x] = 'o';
+			peca->desenho[3][2+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 5:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[1][8+x] = 'o';
+			peca->desenho[2][5+x] = 'o';
+			peca->desenho[3][2+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 6:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[1][5+x] = 'o';
+			peca->desenho[1][8+x] = 'o';
+			peca->desenho[3][2+x] = 'o';
+			peca->desenho[3][5+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+	}
+}
+
+Asciiart *alocardesenho(Asciiart *peca){
+	Asciiart *novo = (Asciiart *)malloc(sizeof(Asciiart));
+	if(peca == NULL){
+		novo->prox = NULL;
+		return novo;
+	}
+	Asciiart *aux_peca = peca;
+	novo->prox = NULL;
+	while(aux_peca->prox != NULL){
+		aux_peca = aux_peca->prox;
+	}
+	aux_peca->prox = novo;
+	return peca;
+}
+
+Asciiart *chamardesenho(TppecaDomino *l){
+	TppecaDomino *aux_l= l;
+	Asciiart *desenho = (Asciiart *)malloc(sizeof(Asciiart)), *aux_desenho;
+	int x, fazer;
+	while(aux_l!= NULL){
+		desenho = alocardesenho(desenho);
+		aux_l = aux_l->right;
+	}
+	aux_l = l, aux_desenho = desenho;
+	while(aux_l!=NULL){
+		x = 0, fazer = 1;
+		desenhar(aux_desenho, aux_l->numberLeft, x, fazer);
+		x+= 11,	fazer = 0;
+		desenhar(aux_desenho, aux_l->numberRight, x, fazer);
+		aux_l = aux_l->right;
+		aux_desenho = aux_desenho->prox;
+	}
+	return desenho;
+}
+
+void printar(Asciiart *peca){
+	Asciiart *aux_peca = peca;
+	int i, j;
+	for(i=0;i<5;i++){
+		printf("\n");
+		while(aux_peca != NULL){
+			for(j=0;j<22;j++){
+				printf("%c", aux_peca->desenho[i][j]);
+			}
+			aux_peca = aux_peca->prox;
+		}
+	aux_peca = peca;
+	}
+	printf("\n");
+}
+
 void logo_uffs(){                                                                                
 	printf("UUUUUUUU     UUUUUUUUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF   SSSSSSSSSSSSSSS\n");
 	printf("U::::::U     U::::::UF::::::::::::::::::::FF::::::::::::::::::::F SS:::::::::::::::S\n");
@@ -320,7 +439,3 @@ printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░   
 printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
 printf("\n\n\tPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
 }                   
-                                                                                    
-                                                                                    
-                                                                                    
-                                                                                    
