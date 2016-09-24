@@ -123,7 +123,6 @@ TppecaDomino *copiar(TppecaDomino *l, int num){
 	return aux;
 }
 
-
 /*---------------------------------------------------	
 	Return 0 = Jogada inválida
 	Return 1 = Jogada válida em um dos lados.
@@ -132,6 +131,9 @@ TppecaDomino *copiar(TppecaDomino *l, int num){
 int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
   TppecaDomino *aux = jogada, *aux_mesa = mesa;
   int inicio = 0, final = 0;
+	if(aux_mesa == NULL){
+		return 0;
+	}
 	if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // retorna 2, indicando que a peça pode ser posta nos dois lados da mesa
 		return 2; //Valida a jogada em ambos os lados pois 0:0 = Coringa.
 	}
@@ -190,6 +192,11 @@ TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
 
 TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	TppecaDomino *ant, *prox, *aux = mao;
+	if(aux->left == NULL && aux->right == NULL){
+		free(mao);
+		mao = inicializa();
+		return mao;
+	}
 	while(aux != jogada){
 		aux = aux->right;
 	}
@@ -214,10 +221,17 @@ TppecaDomino *remove_peca_jogada(TppecaDomino *mao, TppecaDomino *jogada){
 	return mao;
 }
 
-TppecaDomino bot(TppecaDomino *mao_bot, TppecaDomino *mesa, TppecaDomino *compra){
-	TppecaDomino *aux_mao = mao_bot, *aux_compra = compra, *aux_mesa = mesa;
-	int valida;
-	while(valida_jogada(mesa, aux_mao));
+
+int testa_pecas(TppecaDomino *l, TppecaDomino *mesa){ //Função que passa a vez caso o jogador não tenha peças compatíveis com a mesa.
+	TppecaDomino *aux = l;
+	while(aux != NULL){
+		if(valida_jogada(mesa, aux) == 0){
+			aux = aux->right;
+		}else{
+			return 1;
+		}
+	}
+	return 0;
 }
 
 void imprime(TppecaDomino *l){
@@ -231,4 +245,58 @@ void imprime(TppecaDomino *l){
 		p = p->right;
 	}
 	printf("\n");
+}
+
+void imprime_info(TppecaDomino *mesa, TppecaDomino *mao_jogador, TppecaDomino *mao_bot, TppecaDomino *monte){
+	system("clear");
+	printf("Peças no monte: %d", contar_elementos(monte));
+	printf("\tPeças na sua mão: %d\tPeças na mão do bot: %d\n\n", contar_elementos(mao_jogador), contar_elementos(mao_bot));
+	printf("\tMESA:\n");
+	imprime(mesa);
+	printf("\n\tMÃO DO JOGADOR:\n");
+	imprime(mao_jogador);
+	printf("\n");
+}
+
+void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
+	int pontos_jogador = 0, pontos_bot = 0;
+	while(jogador != NULL){
+		pontos_jogador = jogador->numberLeft + jogador->numberRight;
+		if(jogador->right == NULL){
+			break;
+		}
+		jogador = jogador->right;
+	}
+	while(bot != NULL){
+		pontos_bot = bot->numberLeft + bot->numberRight;
+		if(bot->right == NULL){
+			break;
+		}
+		bot = bot->right;
+	}
+	printf("MÃO DO BOT:\n");
+	imprime(bot);
+	printf("PEÇAS QUE RESTARAM NO MONTE:\n");
+	imprime(monte);
+	printf("\n\n\n\n");
+	if(pontos_jogador < pontos_bot || contar_elementos(jogador) == 0){
+		printf("PARABÉNS! VOCÊ GANHOU!\n");
+		printf("Seus pontos: %d\nPontos do bot: %d\n", pontos_jogador, pontos_bot);
+	}else if(pontos_bot < pontos_jogador || contar_elementos(bot) == 0){
+		printf("VOCÊ PERDEU!\n");
+		printf("Seus pontos: %d\nPontos do bot: %d\n", pontos_jogador, pontos_bot);
+	}else{
+		printf("EMPATE!\n");
+		printf("Seus pontos: %d\nPontos do bot: %d\n", pontos_jogador, pontos_bot);
+	}
+	printf("\nOBS: Jogador com menos pontos vence.\n");
+}
+
+void logo_uffs(){
+	printf("                     ____    ____   _____ \n");  
+	printf("            |   |   |       |       |     \n");
+	printf("            |   |   |___    |___    |___  \n");
+	printf("            |   |   |       |           | \n");
+	printf("            |___|   |       |       ____| \n");
+	
 }
