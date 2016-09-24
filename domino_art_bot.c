@@ -12,6 +12,7 @@
 
 int main(){
 	TppecaDomino *monte, *jogador = NULL, *aux, *bot = NULL, *mesa = NULL, *pecajogada;
+	Asciiart *desenho_jogador = inicializaasc(), *desenho_mesa = inicializaasc();
 	int i, cont = 0, cont2 = 0, escolha_lado, numero_pecas, tam, random;
 	monte = cria_pecas();
 	srand(clock());
@@ -45,20 +46,32 @@ int main(){
 	while(flag_jogo){
 		while(flag_jogador){
 			imprime_info(mesa, jogador, bot, monte);
+			printf("Mesa\n");
+			desenho_mesa = chamardesenho(mesa);
+			printar(desenho_mesa);
+			printf("Mão do jogador\n");
+			desenho_jogador = chamardesenho(jogador);
+			printar(desenho_jogador);
 			int pecaescolhida;
 			numero_pecas = contar_elementos(jogador);
 			if(numero_pecas == 0){
 				quem_ganhou(jogador, bot, monte);
+				flag_jogo = 0;
 				break;
 			}else if(contar_elementos(bot) == 0){
 				quem_ganhou(jogador, bot, monte);
+				flag_jogo = 0;
 				break;
 			}else if((testa_pecas(jogador, mesa) == 0 || testa_pecas(bot, mesa) == 0) && monte == NULL){
 				quem_ganhou(jogador, bot, monte);
+				flag_jogo = 0;
 				break;
 			}
 			printf("Informe o índice da peça que deseja jogar ou 0 para pescar: ");
-			while(scanf("%d", &pecaescolhida) != 1);					
+			while(pecaescolhida != 1){ // Só deixa o jogador inserir números inteiros.
+				scanf("%d", &pecaescolhida);
+				getchar();
+			}				
 			if(pecaescolhida >= 1 && pecaescolhida <= numero_pecas && numero_pecas != 0){
 				pecajogada = jogador;
 				for(i = 1; i<pecaescolhida; i++){ pecajogada = pecajogada->right; }
@@ -67,6 +80,12 @@ int main(){
 					mesa = insere_mesa(mesa, pecajogada, 0);
 					jogador = remove_peca_jogada(jogador, pecajogada);
 					imprime_info(mesa, jogador, bot, monte);
+					printf("Mesa\n");
+					desenho_mesa = chamardesenho(mesa);
+					printar(desenho_mesa);
+					printf("Mão do jogador\n");
+					desenho_jogador = chamardesenho(jogador);
+					printar(desenho_jogador);
 					flag_jogador = 0;
 				}else if(pecaescolhida == 2){
 					int flag_lado = 1;
@@ -77,12 +96,24 @@ int main(){
 							mesa = insere_mesa(mesa, pecajogada, 1);
 							jogador = remove_peca_jogada(jogador, pecajogada);
 							imprime_info(mesa, jogador, bot, monte);
+							printf("Mesa\n");
+							desenho_mesa = chamardesenho(mesa);
+							printar(desenho_mesa);
+							printf("Mão do jogador\n");
+							desenho_jogador = chamardesenho(jogador);
+							printar(desenho_jogador);
 							flag_jogador = 0;
 							break;
 						}else if(escolha_lado == 2){
 							mesa = insere_mesa(mesa, pecajogada, 2);
 							jogador = remove_peca_jogada(jogador, pecajogada);
 							imprime_info(mesa, jogador, bot, monte);
+							printf("Mesa\n");
+							desenho_mesa = chamardesenho(mesa);
+							printar(desenho_mesa);
+							printf("Mão do jogador\n");
+							desenho_jogador = chamardesenho(jogador);
+							printar(desenho_jogador);
 							flag_jogador = 0;
 							break;
 						}else{
@@ -120,6 +151,12 @@ int main(){
 						jogador = insere_fim(jogador, aux->numberLeft, aux->numberRight);
 						monte = excluir(monte, aux->numberLeft, aux->numberRight);
 						imprime_info(mesa, jogador, bot, monte);
+						printf("Mesa\n");
+						desenho_mesa = chamardesenho(mesa);
+						printar(desenho_mesa);
+						printf("Mão do jogador\n");
+						desenho_jogador = chamardesenho(jogador);
+						printar(desenho_jogador);
 						if(monte){
 							printf("Continuar pescando?\nSim = 0 / Não = 1\n");
 							scanf("%d", &pesca_escolha);
