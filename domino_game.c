@@ -38,7 +38,7 @@ int main(){
 	TppecaDomino *aux_mao_bot = bot;
 	system("reset");
 	logo_uffs();
-	sleep(1);
+	getchar();
 	//Interatividade do jogador
 	while(jogo_ativo){
 		menu:
