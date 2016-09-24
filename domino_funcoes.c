@@ -1,4 +1,20 @@
+typedef struct _pecaDomino{
+	int numberRight;
+	int numberLeft;
+	struct _pecaDomino *right;
+	struct _pecaDomino *left;
+}TppecaDomino;
+
+typedef struct _asciiart{
+	char desenho[5][22];
+	struct _asciiart *prox;
+}Asciiart;
+
 TppecaDomino *inicializa(){
+	return NULL;
+}
+
+Asciiart *inicializaasc(){
 	return NULL;
 }
 
@@ -282,8 +298,112 @@ void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 		printf("EMPATE!\n");
 		printf("Seus pontos: %d\nPontos do bot: %d\n", pontos_jogador, pontos_bot);
 	}
-	printf("\nOBS: Jogador com menos pontos vence.\n\n");
+	printf("\nOBS: Jogador com menos pontos vence.\n");
 }
+
+void desenhar(Asciiart *peca, int valor, int x, int fazer){
+	int i;
+	if(fazer == 1){
+		for(i=0;i<22;i++){
+			peca->desenho[0][i] = '-';
+			peca->desenho[4][i] = '-';
+			if(i == 0 || i == 10 || i == 11 || i == 21){
+				peca->desenho[1][i] = '|';
+				peca->desenho[2][i] = '|';
+				peca->desenho[3][i] = '|';
+			}else{
+				peca->desenho[1][i] = ' ';
+				peca->desenho[2][i] = ' ';
+				peca->desenho[3][i] = ' ';
+			}
+		}
+	}
+	switch(valor){
+		case 1:
+			peca->desenho[2][5+x] = 'o';
+			break;
+		case 2:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 3:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[2][5+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 4:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[1][8+x] = 'o';
+			peca->desenho[3][2+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 5:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[1][8+x] = 'o';
+			peca->desenho[2][5+x] = 'o';
+			peca->desenho[3][2+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+			break;
+		case 6:
+			peca->desenho[1][2+x] = 'o';
+			peca->desenho[1][5+x] = 'o';
+			peca->desenho[1][8+x] = 'o';
+			peca->desenho[3][2+x] = 'o';
+			peca->desenho[3][5+x] = 'o';
+			peca->desenho[3][8+x] = 'o';
+	}
+}
+
+Asciiart *alocardesenho(Asciiart *peca){
+	Asciiart *novo = (Asciiart *)malloc(sizeof(Asciiart));
+	if(peca == NULL){
+		novo->prox = NULL;
+		return novo;
+	}
+	Asciiart *aux_peca = peca;
+	novo->prox = NULL;
+	while(aux_peca->prox != NULL){
+		aux_peca = aux_peca->prox;
+	}
+	aux_peca->prox = novo;
+	return peca;
+}
+
+Asciiart *chamardesenho(TppecaDomino *l){
+	TppecaDomino *aux_l= l;
+	Asciiart *desenho = (Asciiart *)malloc(sizeof(Asciiart)), *aux_desenho;
+	int x, fazer;
+	while(aux_l!= NULL){
+		desenho = alocardesenho(desenho);
+		aux_l = aux_l->right;
+	}
+	aux_l = l, aux_desenho = desenho;
+	while(aux_l!=NULL){
+		x = 0, fazer = 1;
+		desenhar(aux_desenho, aux_l->numberLeft, x, fazer);
+		x+= 11,	fazer = 0;
+		desenhar(aux_desenho, aux_l->numberRight, x, fazer);
+		aux_l = aux_l->right;
+		aux_desenho = aux_desenho->prox;
+	}
+	return desenho;
+}
+
+void printar(Asciiart *peca){
+	Asciiart *aux_peca = peca;
+	int i, j;
+	while(aux_peca->prox!=NULL){
+		for(i=0;i<5;i++){
+			printf("\n");
+			for(j=0;j<22;j++){
+				printf("%c", aux_peca->desenho[i][j]);
+			}
+		}
+		aux_peca = aux_peca->prox;
+	}
+	printf("\n");
+}
+
 void logo_uffs(){                                                                                
 	printf("UUUUUUUU     UUUUUUUUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF   SSSSSSSSSSSSSSS\n");
 	printf("U::::::U     U::::::UF::::::::::::::::::::FF::::::::::::::::::::F SS:::::::::::::::S\n");
@@ -318,9 +438,5 @@ printf(" ▒▒   ▓▒█░ ▒▓ ░▒▓░ ▒ ░░  ░▒▓▒ ▒ 
 printf("  ▒   ▒▒ ░ ░▒ ░ ▒░   ░   ░░▒░ ░ ░  ░▒ ░ ▒░    ░ ░  ░   ░ ░▒ ▒░▒   ▒▒ ░░ ▒  ▒░░▒░ ░ ░ \n");
 printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░       ░      ░ ░░ ░ ░   ▒   ░ ░  ░ ░░░ ░ ░ \n");
 printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
-printf("\n\n\tPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
-}                   
-                                                                                    
-                                                                                    
-                                                                                    
-                                                                                    
+printf("\nPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
+}                                                                                 
