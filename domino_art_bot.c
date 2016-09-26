@@ -49,7 +49,7 @@ int main(){
 			printar(desenho_mesa);
 			printf("Mão do jogador\n");
 			desenho_jogador = chamardesenho(jogador);
-			printar(desenho_jogador);
+			printarjogador(desenho_jogador);
 			int pecaescolhida;
 			numero_pecas = contar_elementos(jogador);
 			printf("Informe o índice da peça que deseja jogar ou 0 para pescar: ");
@@ -72,7 +72,7 @@ int main(){
 					printar(desenho_mesa);
 					printf("Mão do jogador\n");
 					desenho_jogador = chamardesenho(jogador);
-					printar(desenho_jogador);
+					printarjogador(desenho_jogador);
 					flag_jogador = 0;
 				}else if(pecaescolhida == 2){ // Se a jogada for válida em ambos os lados da mesa.
 					while(flag_lado){
@@ -87,7 +87,7 @@ int main(){
 							printar(desenho_mesa);
 							printf("Mão do jogador\n");
 							desenho_jogador = chamardesenho(jogador);
-							printar(desenho_jogador);
+							printarjogador(desenho_jogador);
 							flag_jogador = 0;
 							break;
 						}else if(escolha_lado == 2){
@@ -99,7 +99,7 @@ int main(){
 							printar(desenho_mesa);
 							printf("Mão do jogador\n");
 							desenho_jogador = chamardesenho(jogador);
-							printar(desenho_jogador);
+							printarjogador(desenho_jogador);
 							flag_jogador = 0;
 							break;
 						}else{
@@ -145,7 +145,7 @@ int main(){
 						printar(desenho_mesa);
 						printf("Mão do jogador\n");
 						desenho_jogador = chamardesenho(jogador);
-						printar(desenho_jogador);
+						printarjogador(desenho_jogador);
 						if(monte){
 							printf("Continuar pescando?\nSim = 0 / Não = 1\n");
 							scanf("%d", &pesca_escolha);
