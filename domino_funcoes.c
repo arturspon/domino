@@ -267,19 +267,20 @@ void imprime_info(TppecaDomino *mesa, TppecaDomino *mao_jogador, TppecaDomino *m
 
 void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 	int pontos_jogador = 0, pontos_bot = 0;
+	TppecaDomino *aux_mao_bot = bot;
 	while(jogador != NULL){
-		pontos_jogador = jogador->numberLeft + jogador->numberRight;
+		pontos_jogador += jogador->numberLeft + jogador->numberRight;
 		if(jogador->right == NULL){
 			break;
 		}
 		jogador = jogador->right;
 	}
-	while(bot != NULL){
-		pontos_bot = bot->numberLeft + bot->numberRight;
-		if(bot->right == NULL){
+	while(aux_mao_bot != NULL){
+		pontos_bot += aux_mao_bot->numberLeft + aux_mao_bot->numberRight;
+		if(aux_mao_bot->right == NULL){
 			break;
 		}
-		bot = bot->right;
+		aux_mao_bot = aux_mao_bot->right;
 	}
 	printf("MÃO DO BOT:\n");
 	imprime(bot);
@@ -296,7 +297,7 @@ void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 		printf("EMPATE!\n");
 		printf("Seus pontos: %d\nPontos do bot: %d\n", pontos_jogador, pontos_bot);
 	}
-	printf("\nOBS: Jogador com menos pontos vence.\n\n");
+	printf("\nOBS: Jogador com menos pontos vence.\n\n\n");
 }
 
 void desenhar(Asciiart *peca, int valor, int x, int fazer){
@@ -435,8 +436,9 @@ void logo_uffs(){
 	printf(" \t      | |  | | |  | | |  | | | | | . ` | |  | |\n");
 	printf(" \t      | |__| | |__| | |  | |_| |_| |   | |__| |\n");
 	printf(" \t      |_____/  ____/|_|  |_|_____|_|  _| ____/ \n");
-
-printf("\n\n ▄▄▄      ██▀███ ▄▄▄█████▓█    ██ ██▀███     ▓█████     ██ ▄█▄▄▄     ▓█████▄ █    ██ \n");
+}
+/*
+ printf("\n\n ▄▄▄      ██▀███ ▄▄▄█████▓█    ██ ██▀███     ▓█████     ██ ▄█▄▄▄     ▓█████▄ █    ██ \n");
 printf("▒████▄   ▓██ ▒ ██▓  ██▒ ▓▒██  ▓██▓██ ▒ ██▒   ▓█   ▀     ██▄█▒████▄   ▒██▀ ██▌██  ▓██▒\n");
 printf("▒██  ▀█▄ ▓██ ░▄█ ▒ ▓██░ ▒▓██  ▒██▓██ ░▄█ ▒   ▒███      ▓███▄▒██  ▀█▄ ░██   █▓██  ▒██░\n");
 printf("░██▄▄▄▄██▒██▀▀█▄ ░ ▓██▓ ░▓▓█  ░██▒██▀▀█▄     ▒▓█  ▄    ▓██ █░██▄▄▄▄██░▓█▄   ▓▓█  ░██░\n");
@@ -445,5 +447,5 @@ printf(" ▒▒   ▓▒█░ ▒▓ ░▒▓░ ▒ ░░  ░▒▓▒ ▒ 
 printf("  ▒   ▒▒ ░ ░▒ ░ ▒░   ░   ░░▒░ ░ ░  ░▒ ░ ▒░    ░ ░  ░   ░ ░▒ ▒░▒   ▒▒ ░░ ▒  ▒░░▒░ ░ ░ \n");
 printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░       ░      ░ ░░ ░ ░   ▒   ░ ░  ░ ░░░ ░ ░ \n");
 printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
-printf("\n\n\tPRESSIONE QUALQUER TELCA PARA JOGAR...\n");
-}                   
+printf("\n\n\tPRESSIONE QUALQUER TECLA PARA JOGAR...\n");
+}  */                 
