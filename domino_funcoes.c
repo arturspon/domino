@@ -409,12 +409,12 @@ void printarjogador(Asciiart *peca){
 				printf("         %d          ", contindice);
 			}
 			contindice++;
+			contar_indice++;
 			aux_peca = aux_peca->prox;
-			if(contar_indice>6){
+			if(contar_indice>7){
 				contar_indice = 1;
 				break;
 			}
-			contar_indice++;
 		}
 		aux_peca = peca;
 		printf("\n");
@@ -489,15 +489,4 @@ void logo_uffs(){
 	printf(" \t      | |__| | |__| | |  | |_| |_| |   | |__| |\n");
 	printf(" \t      |_____/  ____/|_|  |_|_____|_|  _| ____/ \n");
 }
-/*
- printf("\n\n ▄▄▄      ██▀███ ▄▄▄█████▓█    ██ ██▀███     ▓█████     ██ ▄█▄▄▄     ▓█████▄ █    ██ \n");
-printf("▒████▄   ▓██ ▒ ██▓  ██▒ ▓▒██  ▓██▓██ ▒ ██▒   ▓█   ▀     ██▄█▒████▄   ▒██▀ ██▌██  ▓██▒\n");
-printf("▒██  ▀█▄ ▓██ ░▄█ ▒ ▓██░ ▒▓██  ▒██▓██ ░▄█ ▒   ▒███      ▓███▄▒██  ▀█▄ ░██   █▓██  ▒██░\n");
-printf("░██▄▄▄▄██▒██▀▀█▄ ░ ▓██▓ ░▓▓█  ░██▒██▀▀█▄     ▒▓█  ▄    ▓██ █░██▄▄▄▄██░▓█▄   ▓▓█  ░██░\n");
-printf(" ▓█   ▓██░██▓ ▒██▒ ▒██▒ ░▒▒█████▓░██▓ ▒██▒   ░▒████▒   ▒██▒ █▓█   ▓██░▒████▓▒▒█████▓ \n");
-printf(" ▒▒   ▓▒█░ ▒▓ ░▒▓░ ▒ ░░  ░▒▓▒ ▒ ▒░ ▒▓ ░▒▓░   ░░ ▒░ ░   ▒ ▒▒ ▓▒▒   ▓▒█░▒▒▓  ▒░▒▓▒ ▒ ▒ \n");
-printf("  ▒   ▒▒ ░ ░▒ ░ ▒░   ░   ░░▒░ ░ ░  ░▒ ░ ▒░    ░ ░  ░   ░ ░▒ ▒░▒   ▒▒ ░░ ▒  ▒░░▒░ ░ ░ \n");
-printf("  ░   ▒    ░░   ░  ░      ░░░ ░ ░  ░░   ░       ░      ░ ░░ ░ ░   ▒   ░ ░  ░ ░░░ ░ ░ \n");
-printf("  ░  ░  ░               ░       ░           ░  ░   ░  ░       ░  ░  ░      ░     \n");
-printf("\n\n\tPRESSIONE QUALQUER TECLA PARA JOGAR...\n");
-}  */                 
+                
