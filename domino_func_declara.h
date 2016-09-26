@@ -31,6 +31,7 @@ int contar_elementosasc(Asciiart *l);
 void printar(Asciiart *peca);
 int testa_pecas(TppecaDomino *l, TppecaDomino *mesa);
 void imprime(TppecaDomino *l);
+void printarjogador(Asciiart *peca);
 void imprime_info(TppecaDomino *mesa, TppecaDomino *mao_jogador, TppecaDomino *mao_bot, TppecaDomino *monte);
 void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte);
 void logo_uffs();
