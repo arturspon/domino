@@ -54,7 +54,7 @@ int main(){
 			numero_pecas = contar_elementos(jogador);
 			printf("Informe o índice da peça que deseja jogar ou 0 para pescar: ");
 			while(scanf("%d", &pecaescolhida) != 1){ // Só deixa o jogador inserir números inteiros.
-				scanf("%d", &pecaescolhida);
+				printf("Erro. Digite um índice válido.\n");
 				getchar();
 			}		
 			if(pecaescolhida >= 1 && pecaescolhida <= numero_pecas && numero_pecas != 0){ // Confere se o índice passado pelo jogador é válido.
@@ -77,7 +77,10 @@ int main(){
 				}else if(pecaescolhida == 2){ // Se a jogada for válida em ambos os lados da mesa.
 					while(flag_lado){
 						printf("Em qual lado deseja inserir?\n1 = Esquerdo | 2 = Direito\n");
-						scanf("%d", &escolha_lado);
+						while(scanf("%d", &escolha_lado) != 1){
+							printf("Erro. Digite 1 ou 2.\n");
+							getchar();
+						}
 						if(escolha_lado == 1){
 							mesa = insere_mesa(mesa, pecajogada, 1);
 							jogador = remove_peca_jogada(jogador, pecajogada);
@@ -109,13 +112,13 @@ int main(){
 				}else{
 					if(testa_pecas(jogador, mesa) == 1){
 						printf("Peça inválida, por favor, insira outro índice ou pesque.\n\n");
-						sleep(2);					
+						sleep(1.5);					
 					}else if(testa_pecas(jogador, mesa) == 0 && monte != NULL){
 						printf("Você não possui peças válidas. Digite 0 para pescar.\n");
-						sleep(2);
+						sleep(1.5);
 					}else{
 						printf("Você não tem mais peças válidas para esse turno e o monte está vazio.\nPassando a vez...\n");
-						sleep(2);
+						sleep(1.5);
 						flag_jogador = 0;
 					}			
 				}
@@ -129,7 +132,10 @@ int main(){
 						system("clear");
 						while(pesca_escolha != 0 && pesca_escolha != 1){
 							printf("Opção inválida.\n0 = Pescar | 1 = Cancelar\n");
-							scanf("%d", &pesca_escolha);
+							while(scanf("%d", &pesca_escolha) != 1){
+								printf("Erro. Digite 0 ou 1.\n");
+								getchar();
+							}
 						}
 						if(pesca_escolha == 1){
 							break;
@@ -148,7 +154,10 @@ int main(){
 						printarjogador(desenho_jogador);
 						if(monte){
 							printf("Continuar pescando?\nSim = 0 / Não = 1\n");
-							scanf("%d", &pesca_escolha);
+							while(scanf("%d", &pesca_escolha) != 1){
+								printf("Erro. Digite 0 ou 1.\n");
+								getchar();
+							}
 							if(pesca_escolha != 0 && pesca_escolha != 1){
 								printf("Erro. Escolha 0 para pescar ou 1 para cancelar.\n");
 							}
@@ -158,7 +167,6 @@ int main(){
 						}		
 					}while(pesca_escolha != 1);				
 				} else {
-					system("clear");
 					printf("Erro. Não há mais peças para pescar.\n\n");
 					sleep(1);
 					if(valida_jogada(mesa, jogador) == 0 && monte == NULL){
@@ -167,7 +175,7 @@ int main(){
 				}		
 			} else {
 				printf("\nErro. Insira um índice entre 1 e %d\n", numero_pecas);
-				sleep(2);				
+				sleep(1.5);				
 			}			
 		} // fecha while flag_jogador
 		if(jogador == NULL){
@@ -210,4 +218,4 @@ int main(){
 	return 0;
 }
 
-//while((contar_elementos(jogador) != 0 || contar_elementos(bot) != 0 || testa_pecas(jogador, mesa) == 0 || testa_pecas(bot, mesa) == 0) && monte != NULL);
+
