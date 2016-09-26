@@ -258,10 +258,10 @@ void imprime_info(TppecaDomino *mesa, TppecaDomino *mao_jogador, TppecaDomino *m
 	system("clear");
 	printf("Peças no monte: %d", contar_elementos(monte));
 	printf("\tPeças na sua mão: %d\tPeças na mão do bot: %d\n\n", contar_elementos(mao_jogador), contar_elementos(mao_bot));
-	printf("\tMESA:\n");
+	/*printf("\tMESA:\n");
 	imprime(mesa);
 	printf("\n\tMÃO DO JOGADOR:\n");
-	imprime(mao_jogador);
+	imprime(mao_jogador);*/
 	printf("\n");
 }
 
@@ -300,13 +300,23 @@ void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 	printf("\nOBS: Jogador com menos pontos vence.\n\n\n");
 }
 
+/*
+
+---------------------
+| o  o  o | o  o  o |
+|    o    |    o    |
+| o  o  o | o  o  o |
+---------------------
+
+*/
+
 void desenhar(Asciiart *peca, int valor, int x, int fazer){
 	int i;
 	if(fazer == 1){
-		for(i=0;i<22;i++){
+		for(i=0;i<21;i++){
 			peca->desenho[0][i] = '-';
 			peca->desenho[4][i] = '-';
-			if(i == 0 || i == 10 || i == 11 || i == 21){
+			if(i == 0 || i == 10 || i == 20){
 				peca->desenho[1][i] = '|';
 				peca->desenho[2][i] = '|';
 				peca->desenho[3][i] = '|';
@@ -380,7 +390,7 @@ Asciiart *chamardesenho(TppecaDomino *l){
 	while(aux_l!=NULL){
 		x = 0, fazer = 1;
 		desenhar(aux_desenho, aux_l->numberLeft, x, fazer);
-		x+= 11,	fazer = 0;
+		x+= 10,	fazer = 0;
 		desenhar(aux_desenho, aux_l->numberRight, x, fazer);
 		aux_l = aux_l->right;
 		aux_desenho = aux_desenho->prox;
@@ -388,13 +398,29 @@ Asciiart *chamardesenho(TppecaDomino *l){
 	return desenho;
 }
 
-void printar(Asciiart *peca){
+void printarjogador(Asciiart *peca){
 	Asciiart *aux_peca = peca, *p=NULL;
-	int cont=1, i, j;
+	int cont=1, i, j, contindice = 1, contar_indice = 1;
 	do{
+		while(aux_peca->prox != NULL){
+			if(contindice<10){
+				printf("          %d          ", contindice);
+			}else{
+				printf("         %d          ", contindice);
+			}
+			contindice++;
+			aux_peca = aux_peca->prox;
+			if(contar_indice>6){
+				contar_indice = 1;
+				break;
+			}
+			contar_indice++;
+		}
+		aux_peca = peca;
+		printf("\n");
 		for(i=0;i<5;i++){
 			while(aux_peca != NULL){
-				for(j=0;j<22;j++){
+				for(j=0;j<21;j++){
 					printf("%c", aux_peca->desenho[i][j]);
 				}
 				cont++;
@@ -409,6 +435,32 @@ void printar(Asciiart *peca){
 			aux_peca = peca;
 		}
 		peca = p;
+		aux_peca = peca;
+	}while(p != NULL);
+}
+
+void printar(Asciiart *peca){
+	Asciiart *aux_peca = peca, *p=NULL;
+	int cont=1, i, j;
+	do{
+		for(i=0;i<5;i++){
+			while(aux_peca != NULL){
+				for(j=0;j<21;j++){
+					printf("%c", aux_peca->desenho[i][j]);
+				}
+				cont++;
+				p = aux_peca->prox;
+				if(cont>7){
+					break;
+				}
+				aux_peca = aux_peca->prox;
+			}
+			cont = 1;
+			printf("\n");	
+			aux_peca = peca;
+		}
+		peca = p;
+		aux_peca = peca;
 	}while(p != NULL);
 }
 
