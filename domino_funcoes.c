@@ -141,8 +141,8 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 	if(aux_mesa == NULL){
 		return 0;
 	}
-	if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // retorna 2, indicando que a peça pode ser posta nos dois lados da mesa
-		return 2; //Valida a jogada em ambos os lados pois 0:0 = Coringa.
+	if(jogada->numberLeft == 0 && jogada->numberRight == 0){ 
+		return 2; 
 	}
 	if(aux->numberLeft == aux_mesa->numberLeft) inicio++;
 	else if(aux->numberRight == aux_mesa->numberLeft) inicio++;
@@ -168,9 +168,9 @@ int valida_jogada(TppecaDomino *mesa, TppecaDomino *jogada){
 
 TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
    TppecaDomino *aux = mesa;
-	if(lado == 1 || lado == 0){ //LADO DIREITO DA MESA SE POSSÍVEL
-		if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // verifica se é o coringa que o jogador tem na mao
-			aux = insere_inicio(aux, 0, 0); // se sim, insere no lado esquerdo da mesa a peça |0||0|
+	if(lado == 1 || lado == 0){ 
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // Verifica se a peça que o jogador tem na mão é o coringa.
+			aux = insere_inicio(aux, 0, 0); 
 			return aux;
 		}else if(jogada->numberRight == aux->numberLeft){
 			aux = insere_inicio(aux, jogada->numberLeft, jogada->numberRight);
@@ -180,12 +180,12 @@ TppecaDomino *insere_mesa(TppecaDomino *mesa, TppecaDomino *jogada, int lado){
 			return aux;
 		}
 	}
-	if(lado == 2 || lado == 0){ //LADO ESQUERDO DA MESA SE POSSÍVEL
-		while(aux->right != NULL){ // vai até o final da mesa;
+	if(lado == 2 || lado == 0){ 
+		while(aux->right != NULL){ // Percorre a lista até o último elemento.
 			aux = aux->right;
 		}
-		if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // verifica se é o coringa que será jogado
-			aux = insere_fim(aux, 0, 0); // insere o coringa no final da mesa
+		if(jogada->numberLeft == 0 && jogada->numberRight == 0){ // Verifica se a peça que o jogador tem na mão é o coringa.
+			aux = insere_fim(aux, 0, 0);
 			return mesa;
 		}else if(jogada->numberLeft == aux->numberRight){
 			aux = insere_fim(aux, jogada->numberLeft, jogada->numberRight);
@@ -284,9 +284,10 @@ void quem_ganhou(TppecaDomino *jogador, TppecaDomino *bot, TppecaDomino *monte){
 	}
 	printf("MÃO DO BOT:\n");
 	imprime(bot);
+	printf("\n");
 	printf("PEÇAS QUE RESTARAM NO MONTE:\n");
 	imprime(monte);
-	printf("\n\n\n\n");
+	printf("\n\n");
 	if(pontos_jogador < pontos_bot || contar_elementos(jogador) == 0){
 		printf("PARABÉNS! VOCÊ GANHOU!\n");
 		printf("Seus pontos: %d\nPontos do bot: %d\n", pontos_jogador, pontos_bot);
