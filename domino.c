@@ -1,6 +1,6 @@
 /*
 	Universidade Federal da Fronteira Sul
-	Jogo de dominó
+	Jogo de dominó - Trabalho NP1
 	Feito por: Artur Constanzi Sponchiado e Kadu Grando
 */
 
@@ -41,7 +41,7 @@ int main(){
 	sleep(1);
 
 	//Interatividade do jogador
-	do{
+	while(jogo_ativo){
 		while(flag_jogador == 1){
 			imprime_info(mesa, jogador, bot, monte);
 			printf("Mesa\n");
@@ -52,6 +52,10 @@ int main(){
 			printarjogador(desenho_jogador);
 			int pecaescolhida;
 			numero_pecas = contar_elementos(jogador);
+			if(valida_jogada(mesa, jogador) == 0 && valida_jogada(mesa, bot) == 0 && monte == NULL){
+				jogo_ativo = 0;
+				break;
+			}
 			printf("Informe o índice da peça que deseja jogar ou 0 para pescar: ");
 			while(scanf("%d", &pecaescolhida) != 1){ // Só deixa o jogador inserir números inteiros.
 				printf("Erro. Digite um índice válido.\n");
@@ -118,13 +122,14 @@ int main(){
 						sleep(1.5);
 					}else{
 						printf("Você não tem mais peças válidas para esse turno e o monte está vazio.\nPassando a vez...\n");
-						sleep(1.5);
-						flag_jogador = 0;
+						sleep(2.5);
+						break;					
 					}			
 				}
 			}else if(pecaescolhida == 0){ // Código para o jogador pescar.
-				if(valida_jogada(mesa, jogador) == 0 && monte == NULL){
+				if(valida_jogada(mesa, jogador) == 0 && valida_jogada(mesa, bot) == 0 && monte == NULL){
 						jogo_ativo = 0;
+						break;
 					}
 				if(contar_elementos(monte) > 0){ // Verifica se ainda há peças para pescar.
 					int pesca_escolha = 0;
@@ -169,8 +174,13 @@ int main(){
 				} else {
 					printf("Erro. Não há mais peças para pescar.\n\n");
 					sleep(1);
-					if(valida_jogada(mesa, jogador) == 0 && monte == NULL){
+					if(valida_jogada(mesa, jogador) == 0 && valida_jogada(mesa, bot) == 0 && monte == NULL){
 						jogo_ativo = 0;
+						break;
+					}else if(valida_jogada(mesa, jogador) == 0 && monte == NULL){
+						printf("Você não tem mais peças válidas para esse turno e o monte está vazio.\nPassando a vez...\n");
+						sleep(2.5);
+						break;
 					}
 				}		
 			} else {
@@ -179,6 +189,11 @@ int main(){
 			}			
 		} // fecha while flag_jogador
 		if(jogador == NULL){
+			break;
+		}
+		flag_jogador = 1;
+		if(valida_jogada(mesa, jogador) == 0 && valida_jogada(mesa, bot) == 0 && monte == NULL){
+			jogo_ativo = 0;
 			break;
 		}
 		//VEZ DO BOT JOGAR
@@ -212,8 +227,14 @@ int main(){
 		if(bot == NULL){
 			break;
 		}
-		flag_jogador = 1;
-	}while(jogo_ativo); // fecha while flag_jogo
+	} // fecha while flag_jogo
+	imprime_info(mesa, jogador, bot, monte);
+	printf("Mesa\n");
+	desenho_mesa = chamardesenho(mesa);
+	printar(desenho_mesa);
+	printf("Mão do jogador\n");
+	desenho_jogador = chamardesenho(jogador);
+	printarjogador(desenho_jogador);
 	quem_ganhou(jogador, bot, monte);	
 	return 0;
 }
